@@ -1,0 +1,14 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - name: get a file from internet
+    get_url:
+      url: https://disk.lqdflying.info/scripts/chnroute.txt
+      validate_certs: no
+      dest: /home/centos/chnroute.txt
+      mode: "0660"
+      checksum: md5:https://disk.lqdflying.info/scripts/chnroute.txt.md5sum.txt
+    register: output
+  - debug: msg={{ output }}
+#Format: <algorithm>:<checksum|url>, e.g. checksum="sha256:D98291AC[...]B6DC7B97", checksum="sha256:http://example.com/path/sha256sum.txt"

@@ -1,0 +1,33 @@
+- hosts: slave
+  gather_facts: no
+  tasks:
+  - name: install htop package
+    yum:
+      name: htop
+      state: present
+    register: install_return
+  - debug: msg={{ install_return.results }}
+  - name: remove htop package
+    yum:
+      name: htop
+      state: absent
+    register: yum_return
+  - debug: msg={{ yum_return.results }}
+  - name: install htop package from url
+    yum:
+      name: http://ftp.cuhk.edu.hk/pub/linux/fedora-epel/7/x86_64/Packages/h/htop-2.1.0-1.el7.x86_64.rpm
+      state: present
+    register: url_return
+# run the task above for the first time,there is a WARNING:
+#-----------
+#[WARNING]: Module remote_tmp /root/.ansible/tmp did not exist and was created with a mode of 0700, this may
+#cause issues when running as another user. To avoid this, create the remote_tmp dir with the correct
+#permissions manually
+#-----------
+  - debug: msg={{ url_return.results }}
+  - name: install package group
+    yum:
+      name: "@Development tools"
+      state: present
+    register: group_return
+  - debug: msg={{ group_return }}

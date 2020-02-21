@@ -1,0 +1,16 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - name: archive a directory
+    archive:
+      path:
+      - /home/centos/systemd
+      - /home/centos/tmp
+      dest: /home/centos/archive.tar.bz2
+      format: bz2
+  - name: unarchive a archived file
+    unarchive:
+      remote_src: yes #Default no.Set to yes to indicate the archived file is already on the remote system and not local to the Ansible controller.
+      src: /home/centos/archive.tar.bz2
+      dest: /home/centos/unarchive #dest directory must be an existing dir

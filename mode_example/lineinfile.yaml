@@ -1,0 +1,30 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - name: change a line
+    lineinfile:
+      path: /home/centos/lineinfile.example
+      regex: "^Notes*"
+      line: "Change the Notes to another line again"
+  - name: insert a line before a line
+    lineinfile:
+      dest: /home/centos/lineinfile.example
+      insertbefore: "^Change*"
+      line: "insertbefore"
+  - name: insert a line after a line
+    lineinfile:
+      dest: /home/centos/lineinfile.example
+      insertafter: "^Change*"
+      line: "insertafter"
+  - name: delete a line
+    lineinfile:
+      dest: /home/centos/lineinfile.example
+      regex: "^insertafter*"
+      state: absent
+  - name: if a match line not exist,do not change the file
+    lineinfile:
+      dest: /home/centos/lineinfile.example
+      regex: "^synopsis*"
+      backrefs: yes
+      line: "this line will not added to the end of the file"  

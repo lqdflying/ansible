@@ -1,0 +1,18 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - name: sync file from local to remote client
+    synchronize:
+      src: /home/centos/systemd
+      dest: /home/centos/
+      mode: push
+    register: push_output
+  - debug: msg={{ push_output.stdout_lines }}
+  - name: sync file from remove to localhost
+    synchronize:
+      src: /home/centos/tmp
+      dest: /home/centos/
+      mode: pull
+    register: pull_output
+  - debug: msg={{ pull_output.stdout_lines }}
