@@ -1,0 +1,17 @@
+- hosts: slave
+  gather_facts: no
+  tasks:
+  - name: check the status of chronyd systemd service
+    systemd:
+      name: chronyd
+      state: started
+      enabled: yes
+    register: service_status
+  - debug: msg={{ service_status }} 
+  - name: restart chronyd systemd service
+    systemd:
+      name: chronyd
+      state: restarted
+      enabled: yes
+    register: service_status
+  - debug: msg={{ service_status }} 

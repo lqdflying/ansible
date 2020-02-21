@@ -1,0 +1,38 @@
+- hosts: slave
+  gather_facts: no
+  become: false
+  tasks:
+  - name: touch a file and set privilege
+    file:
+      path: /home/centos/liuqd.file
+      state: touch 
+#[state: touch] an empty file will be created if the path does not exist, while an existing file or directory will receive updated file access and modification times
+      owner: centos
+      group: centos
+      mode: "0666"
+  - name: create a link for the file created above
+    file:
+      src: /home/centos/liuqd.file
+      dest: /home/centos/liuqd.link
+      state: link
+      owner: centos
+      group: centos
+  - name: return the state of the file 
+    file:
+      path: /home/centos/liuqd.file
+      state: file
+    register: file_state
+  - name: output the state of the file
+    debug: msg="{{ file_state }}"
+  - name: create a directory through the file module
+    file:
+      path: /home/centos/liuqd.d/liuqd.sub/liuqd.sub.sub
+      state: directory 
+#state directory: If directory, all intermediate subdirectories will be created if they do not exist.
+      owner: centos
+      group: centos
+      mode: "0755"
+  - name: delete the directory
+    file:
+      path: /home/centos/liuqd.d/liuqd.sub/liuqd.sub.sub
+      state: absent 

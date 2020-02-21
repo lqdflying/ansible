@@ -1,0 +1,28 @@
+- hosts: slave
+  gather_facts: no
+  become: True
+  vars:
+    passwd: "liuquandong"
+  tasks:
+  - name: generate the SHA for the password
+    shell: python -c "import crypt, getpass, pwd; print(crypt.crypt('{{ passwd }}', '\$6\$saltsalt\$'))"
+    register: pass_sha
+    delegate_to: localhost
+  - name: create a group
+    group:
+      name: liuqd
+      state: present
+    register: group_return
+  - debug: msg={{ group_return }}
+  - name: create a user
+    user:
+      name: liuqd
+      comment: "anddy.liu"
+      group: liuqd
+      password: "{{ pass_sha.stdout }}" #password should be encoded to SHA5 format
+      state: present
+      generate_ssh_key: yes 
+#[generate_ssh_key: yes] Whether to generate a SSH key for the user in question.This will not overwrite an existing SSH key unless used with force=yes
+      ssh_key_bits: 2048
+    register: user_output
+  - debug: msg={{ user_output }}

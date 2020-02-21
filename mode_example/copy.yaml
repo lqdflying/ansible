@@ -1,0 +1,37 @@
+- hosts: slave
+  gather_facts: no
+  become: false
+  tasks:
+  - name: upload a file to remote client
+    copy:
+      src: ../hosts
+      dest: /home/centos/
+      owner: centos
+      group: centos
+      mode: "0644"
+  - name: upload a file and backup the file before overwrite
+    copy:
+      backup: yes
+      src: ../hosts
+      dest: /home/centos/
+      owner: centos
+      group: centos
+      mode: "0644"
+    register: backup_info
+  - debug: msg={{ backup_info }}
+  - name: create a file directly in the remote machine
+    copy:
+      content: "file content\n"
+      dest: /home/centos/liuqd.content
+      owner: centos
+      group: centos
+      mode: "0644"
+  - name: upload a directory
+    copy:
+      src: ../roles
+#[src: directory] If path is a directory, it is copied recursively. In this case, if path ends with "/", only inside contents of that directory are copied to destination. Otherwise, if it does not end with "/", the directory itself with all contents is copied. This behavior is similar to the rsync command line tool.
+      dest: /home/centos/
+      owner: centos
+      group: centos
+      mode: "0644"    
+      

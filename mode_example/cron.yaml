@@ -1,0 +1,19 @@
+- hosts: slave
+  gather_facts: no
+  become: false
+  tasks:
+  - name: set a cron work for restarting chronyd service
+    cron:
+      name: "a job for restarting chronyd service"
+      hour: "1"
+      minute: "05"
+      job: "/usr/bin/systemctl restart chronyd"
+      state: present
+    register: cron_return
+  - debug: msg={{ cron_return }}
+  - name: remove the cron work for restarting chronyd service
+    cron:
+      name: "a job for restarting chronyd service"
+      state: absent      
+    register: cron_return
+  - debug: msg={{ cron_return }}
