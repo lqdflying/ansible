@@ -1,0 +1,18 @@
+#Note: client host must allow password login
+#Note: ansible-playbook should use -k paramater to input password for remote connection when run the playbook
+#Version2 use command to get the localhost value and use register to set the localhost value
+- hosts: all
+  gather_facts: yes
+  become: false
+  tasks:
+  - command: echo ${LOGNAME}
+    register: username
+    delegate_to: localhost
+  - command: echo ${HOME}
+    register: homepwd
+    delegate_to: localhost
+  - name: Set authorized key to the remote hosts
+    authorized_key:
+      user: "{{ username.stdout }}"
+      state: present
+      key: "{{ lookup('file', '{{ homepwd.stdout }}/.ssh/id_rsa.pub') }}"
