@@ -1,7 +1,6 @@
 [defaults]
 inventory      = ./hosts
 roles_path    = ./roles
-stdout_callback = yaml
 remote_user = centos
 bin_ansible_callbacks = True
 retry_files_enabled = True
