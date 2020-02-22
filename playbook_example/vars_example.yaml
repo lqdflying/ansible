@@ -1,0 +1,30 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    - var1: this is a file
+    - var2: "this is a var2"
+    - var3:
+        - first
+        - second
+        - third
+    - var4: ["four","five","six"]
+    - var5:
+        i
+        love
+        u
+  tasks:
+  - name: var1 and var2 are the same type vars
+    debug: 
+      msg: "Line break would be translated into blankspace
+      var1 is: \"{{ var1 }}\"\nand\nvar2 is: \"{{ var2 }}\""
+  - name: output var3
+    debug:
+      msg: "{{ var3 }}"
+  - name: var3 and var4 are the same type vars
+    debug: msg={{ var4 }}
+  - name: output var5
+    debug:
+      msg: "{{ var5 }}"
+  - name: check the return vars type of var1,var3 and var5
+    debug:
+      msg: "var1's type is {{ var1 | type_debug }}\nvar3's type is {{ var3 | type_debug }}\nvar5's type is {{ var5 | type_debug }}"      
