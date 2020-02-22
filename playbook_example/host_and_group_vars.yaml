@@ -1,0 +1,6 @@
+- hosts: PROD
+  gather_facts: no
+  tasks:
+  - name: display group and host vars
+    debug: 
+      msg: "In the host [{{ inventory_hostname }}] , its host_vars is {{ name }} and its group_vars is {{ group }}"
