@@ -1,0 +1,28 @@
+- name: set custom facts to remote client
+  hosts: slave
+  gather_facts: no
+  tasks:
+  - file:
+      path: /etc/ansible/facts.d
+      state: directory
+      owner: root
+      group: root
+  - copy:
+      src: ../vars/info.fact
+      dest: /etc/ansible/facts.d/info.fact
+      owner: root
+      group: root
+
+- name: get custom facts from remote client
+  hosts: slave
+  gather_facts: yes
+  tasks:
+  - debug: msg={{ ansible_local.info.general.package }}
+ 
+- name: set facts example
+  hosts: slave
+  gather_facts: yes
+  tasks:
+  - set_fact: innodb_buffer_pool_size_mb="{{ ansible_memtotal_mb / 2 |int }}"
+  - debug:
+        msg: "we should set the 'innodb_buffer_pool_size_mb' to {{ innodb_buffer_pool_size_mb }}MB if there have a mysql running on it"
