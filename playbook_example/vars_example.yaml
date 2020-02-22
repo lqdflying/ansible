@@ -12,6 +12,8 @@
         i
         love
         u
+  vars_files:
+    - ../vars/info.yaml
   tasks:
   - name: var1 and var2 are the same type vars
     debug: 
@@ -27,4 +29,7 @@
       msg: "{{ var5 }}"
   - name: check the return vars type of var1,var3 and var5
     debug:
-      msg: "var1's type is {{ var1 | type_debug }}\nvar3's type is {{ var3 | type_debug }}\nvar5's type is {{ var5 | type_debug }}"      
+      msg: "var1's type is {{ var1 | type_debug }}\nvar3's type is {{ var3 | type_debug }}\nvar5's type is {{ var5 | type_debug }}"
+  - name: check the use of vars_files
+    debug:
+      msg: "the type of the vars_file is: {{ file | type_debug }} \n and this is the second level vars: {{ file.liuqd }}"
