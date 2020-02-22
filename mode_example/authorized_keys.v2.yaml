@@ -4,6 +4,8 @@
 - hosts: all
   gather_facts: yes
   become: false
+  vars:
+    ansible_password: liuquandong
   tasks:
   - command: echo ${LOGNAME}
     register: username

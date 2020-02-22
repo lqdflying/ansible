@@ -1,12 +1,10 @@
-#Note: client host must allow password login
-#Note: ansible-playbook should use -k paramater to input password for remote connection when run the playbook
-#Version1 use facts to get the localhost value and vars to set the value
 - hosts: all,localhost
   gather_facts: yes
   become: false
   vars:
     local_user: "{{ hostvars['localhost'].ansible_env.LOGNAME }}"
     local_pwd: "{{ hostvars['localhost'].ansible_env.HOME }}"
+    ansible_password: liuquandong
   tasks:
   - name: Set authorized key to the remote hosts
     authorized_key:
