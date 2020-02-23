@@ -33,3 +33,10 @@
   - name: check the use of vars_files
     debug:
       msg: "the type of the vars_file is: {{ file | type_debug }} \n and this is the second level vars: {{ file.liuqd }}"
+
+- name: magic variables example
+  hosts: all
+  gather_facts: yes
+  tasks:
+  - debug: msg="the host's hostname [{{ inventory_hostname }}] but we could get another fact variables using hostvars like the follows:\n {{ hostvars['middleware'].ansible_hostname }} "
+    when: inventory_hostname == 'web'
