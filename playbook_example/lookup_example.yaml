@@ -1,0 +1,84 @@
+- name: lookup with file
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - new_lookup: "{{ lookup('file', '../vars/info.yaml') }}"
+  become: no
+  tasks:
+  - name: the type of value which lookup with file returned
+    debug: msg={{ new_lookup | type_debug }}
+  - name: the value which lookup with file returned
+    debug: msg={{ new_lookup }}
+- name: lookup with pipe
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - new_lookup: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') }}"
+  become: no
+  tasks:
+  - name: the type of value which lookup with pip returned
+    debug: msg={{ new_lookup | type_debug }}
+  - name: the value which lookup with pip returned
+    debug: msg={{ new_lookup }}
+- name: lookup with ENV
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - new_lookup: "{{ lookup('env', 'PWD') }}"
+  become: no
+  tasks:
+  - name: the type of value which lookup with ENV returned
+    debug: msg={{ new_lookup | type_debug }}
+  - name: the value which lookup with ENV returned
+    debug: msg={{ new_lookup }}
+- name: lookup with template
+  hosts: localhost
+  gather_facts: yes 
+#their has a facts value in the jinja2 template which need to gather facts on localhost
+  vars:
+    - new_lookup: "{{ lookup('template', '../templates/simple.j2') }}"
+  become: no
+  tasks:
+  - name: the type of value which lookup with template returned
+    debug: msg={{ new_lookup | type_debug }}
+  - name: the value which lookup with template returned
+    debug: msg={{ new_lookup }}
+- name: lookup with csvfile
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - new_lookup: "{{ lookup('csvfile', 'sue file=../vars/simple.csv delimiter=, col=1') }}"
+  become: no
+  tasks:
+  - name: the type of value which lookup with csvfile returned
+    debug: msg={{ new_lookup | type_debug }}
+  - name: the value which lookup with csvfile returned
+    debug: msg={{ new_lookup }}
+    
+#lookup with redis
+#- name: lookup value in redis
+#  debug: msg="{{ lookup('redis_kv', 'redis://localhost:6379,weather')}}"
+#lookup with etcd
+#- name: look up value in etcd
+#  debug: msg="{{ lookup('etcd','http://127.0.0.1:2379,weather')}}"
+#lookuo with generate a radom password
+#- name: create deploy mysql user
+#  mysql_user: name=bob password={{ lookup('password', './bob-password.txt chars=ascii_letters,digits,hexdigits,punctuation length=15')}} priv=*.*:ALL state=present
+
+- name: lookup with dig
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - new_lookup: "{{ lookup('dig', 'aliyun.com./TXT') }}"
+  become: no
+  tasks:
+  - name: the type of value which lookup with dig returned
+    debug: msg={{ new_lookup | type_debug }}
+  - name: the value which lookup with dig returned
+    debug: msg={{ new_lookup }}
+
+
+
+
+
+
