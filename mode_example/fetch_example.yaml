@@ -1,0 +1,18 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - name: copy directory from remote
+    fetch:
+      src: /home/centos/archive.tar.bz2
+      dest: /home/centos/backup
+  - name: set flat to yes and dest end with /
+    fetch:
+      src: /home/centos/archive.tar.bz2
+      dest: /home/centos/flat/ #<inventory hostname>/home/centos won't be created automatically
+      flat: yes
+  - name: set flat to yes and dest end with no /
+    fetch:
+      src: /home/centos/archive.tar.bz2
+      dest: /home/centos/file #archive.tar.bz2 would be renamed to file and stored in /home/centos
+      flat: yes
