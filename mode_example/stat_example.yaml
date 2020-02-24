@@ -1,0 +1,37 @@
+- name: Determine if a path is a directory
+  hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - stat:
+      path: /home/centos/roles
+    register: p
+
+  - debug:
+      msg: "Path exists and is a directory"
+    when: p.stat.isdir is defined and p.stat.isdir
+
+- name: Determine if a path exists and is a symlink
+  hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - stat:
+      path: /home/centos/archive.tar.bz2
+    register: sym
+
+  - debug:
+      msg: "Path isn't defined (path doesn't exist)"
+    when: sym.stat.islnk is not defined
+  
+  - debug:
+      msg: "Path is defined (path must exist)"
+    when: sym.stat.islnk is defined
+  
+  - debug:
+      msg: "Path exists and is a symlink"
+    when: sym.stat.islnk is defined and sym.stat.islnk
+  
+  - debug:
+      msg: "Path exists and isn't a symlink"
+    when: sym.stat.islnk is defined and sym.stat.islnk == False
