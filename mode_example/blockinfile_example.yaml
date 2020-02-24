@@ -1,0 +1,34 @@
+- name: insert some line in the file
+  hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - blockinfile:
+      path: /home/centos/blockinfile.example
+      marker: "## {mark} change this file"
+      marker_begin: "liuqd start edit"
+      marker_end: "liuqd end edidt"
+      insertafter: "^See*"
+      block: |
+        this is 
+        block 
+        i wanna 
+        insert in
+
+- name: udpate the file edited in the last task
+  hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - blockinfile:
+      path: /home/centos/blockinfile.example
+      marker: "## {mark} change this file"
+      marker_begin: "liuqd start edit"
+      marker_end: "liuqd end edidt"
+      insertafter: "^See*"
+      backup: yes
+      block: |
+        this is 
+        block 
+        i wanna 
+        udpate
