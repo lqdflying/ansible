@@ -1,0 +1,12 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks:
+  - name: find a file
+    find:
+      path: /home/centos
+      recurse: yes
+      patterns: "*.wants"
+      file_type: directory
+    register: file_find
+  - debug: msg={{ file_find | json_query('files[*].path') }}
