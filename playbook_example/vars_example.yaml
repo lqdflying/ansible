@@ -40,3 +40,10 @@
   tasks:
   - debug: msg="the host's hostname [{{ inventory_hostname }}] but we could get another fact variables using hostvars like the follows:\n {{ hostvars['middleware'].ansible_hostname }} "
     when: inventory_hostname == 'web'
+
+- name: custom vars for host and group
+  hosts: PROD
+  gather_facts: no
+  tasks:
+  - debug: msg="my custom host var is {{ my_var }} and my custom group var is {{ group_prod_name }} "
+    when: inventory_hostname == 'web'
