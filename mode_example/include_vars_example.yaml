@@ -1,0 +1,25 @@
+- hosts: localhost
+  gather_facts: no
+  become: no
+  vars:
+    - var1: name1
+    - var2: name2
+  tasks:
+  - debug: msg={{ var1 }}
+  - debug: 
+      msg: "{{ file.liuqd }}"
+    register: debug_return
+    ignore_errors: True #there would be a fatal error,use ignore_errors to continue
+  - fail: #just for a test for fail module
+      msg: "another error example for an undefined vars"  #there would be a fatal error,use ignore_errors to continue
+    when: '"error" in debug_return.msg'
+    ignore_errors: True
+  - name: include var from file dynamically
+    include_vars:
+      file: ../vars/info.yaml
+  - debug: msg={{ file.liuqd }}
+  - name: include var from file dynamically and put all of it to a top var
+    include_vars:
+      file: ../vars/info.yaml
+      name: top_var
+  - debug: msg={{ top_var }}
