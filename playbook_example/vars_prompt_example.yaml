@@ -1,0 +1,17 @@
+- hosts: localhost
+  vars_prompt:
+    - name: "your_name"
+      prompt: "What is your name"
+      private: no
+      default: "NULL"
+    - name: "your_age"
+      prompt: "How old are U?"
+      default: 20
+    - name: "your_password"
+      prompt: "pls enter your password"
+      encrypt: "sha512_crypt"
+  tasks:
+    - debug:
+        msg: Your name is {{ your_name }}, Your age is {{ your_age }}
+    - debug: 
+        msg: your password is {{ your_password }}
