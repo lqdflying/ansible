@@ -1,0 +1,78 @@
+{# expression Test #}
++++++++Variable expression++++++++++++
+
+[IP address for {{ inventory_hostname }} ]
+
+{{ ansible_default_ipv4.address }}
+
++++++++++Comparison expression++++++++
+{{ 1 == 1 }}
+{{ 2 != 2 }}
+{{ 2 > 1 }}
+{{ 2 >= 1 }}
+{{ 2 < 1 }}
+{{ 2 <= 1 }}
+
++++++Logical operation expression++++++++
+{{ (2 > 1) or (1 > 2) }}
+{{ (2 > 1) and (1 > 2) }}
+{{ not true }}
+{{ not True }}
+{{ not false }}
+{{ not False }}
+
++++++Arithmetic expression++++++++
+{{ 3 + 2 }}
+{{ 3 - 4 }}
+{{ 3 * 5 }}
+{{ 2 ** 3 }}
+{{ 7 / 5 }}
+{{ 7 // 5 }}
+{{ 17 % 5 }}
+
+++++++Member expression++++++
+{{ 1 in [1,2,3,4] }}
+{{ 1 not in [1,2,3,4] }}
+
++++++++Test expression++++++++
+{{ example_str is defined }}
+{{ example_str is undefined }}
+{{ '/opt' is exists }}
+{{ '/opt' is file }}
+{{ '/opt' is directory }}
+
+
++++++++Various data types++++++++
+### str
+{{ example_str }}
+{{ "testString" }}
+### num
+{{ example_num }}
+{{ 18.8 }}
+### list
+{{ example_list }}
+{{ example_list.1 }}
+{{ example_list[1] }}
+### tuple
+{{ example_tuple }}
+{{ example_tuple.0 }}
+{{ example_tuple[0] }}
+### dict
+{{ example_dict }}
+{{ example_dict.name }}
+{{ example_dict['name'] }}
+### Boolean
+{{ True }}
+{{ true }}
+{{ False }}
+{{ false }}
+
++++++++filter expression++++++++
+{{ example_str | upper }}
+
++++++++lookup expression++++++++
+{{ lookup('file','../vars/info.yaml') }}
+{{ lookup('env','PATH') }}
+
+++++++++++++Ternary expression+++++++
+{{ 'example_num is bigger ' if example_num > 10 else 'example_num is smaller' }}

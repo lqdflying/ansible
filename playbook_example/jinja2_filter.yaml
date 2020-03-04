@@ -1,0 +1,37 @@
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    - var_default1: ""
+    - var_string1: "abc123ABV"
+    - var_string2: " abc "
+    - var_string3: "123456789"
+    - var_string4: "sfacb1335@#$%"
+    - var_num: -1
+    - var_list1: [1,2,4,6,3,5]
+    - var_list2: [1,[2,3,4,[5,6]]]
+    - var_list3: [1,2,'a','b','cd']
+    - var_list4: [1,'A','b',['C','d'],'Efg']
+    - var_list5: ['abc',1,2,'a',3,2,'1','abc']
+    - var_list6: ['abc',3,'1','b','a']
+    - var_path: /home/centos/ansible/ansible.cfg.with_no_comment
+    - var_home: ~/ansible/hosts
+    - var_link: /home/centos/config.file
+    - var_file:
+        - path: /home/centos/file1
+          mode: '0444'
+        - path: /home/centos/file2
+        - path: /home/centos/file3
+  vars_files:
+    - ../vars/user.json
+  tasks:
+  - debug:
+      msg: "{{ var_default2 | mandatory }}"
+    ignore_errors: yes
+  - file:
+      dest: "{{ item.path }}"
+      state: touch
+      mode: "{{ item.mode | default(omit) }}"
+    loop: "{{ var_file }}"
+  - template:
+      src: ../templates/filter.j2
+      dest: ../tmp/filter.out

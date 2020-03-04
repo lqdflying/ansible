@@ -1,0 +1,142 @@
+++++if control++++
+{% if var_number > 3 %}
+the var is greater than 3
+{% elif var_number < 20 %}
+but it is smaller than 20
+{% else %}
+and also greater than 20
+{% endif %}
+
++++++define a var++++
+{% set var_jinja2 = "abd" %}
+{{ var_jinja2 }}
+
+
+++++++for control+++++
+{% for i in [3,1,7,2,9] %}
+{{ i }}
+{% endfor %}
+
+{% for i in [3,1,7,2,9] -%}
+{{ i }}
+{%- endfor %}
+
+{% for i in [3,1,7,2,9] -%}
+{{ i }}{{ ' ' }}
+{%- endfor %}
+
+{% for i in [3,1,7,2,9] -%}
+{{ i~'_' }}
+{%- endfor %}
+
+
+++++++for loop+++++
+{% for i in [3,1,7,2,9] %}
+{{ i }} <-- The {{ loop.index }} times loop
+{% endfor %}
+
+{% set userlist=['Naruto','Kakashi','Sasuke','Sakura','Lee','Gaara','Itachi']  %}
+{% for u in userlist %}
+{{ u ~'----'~ loop.cycle('team1','team2','team3')}}
+{%endfor%}
+
++++++for range+++++
+{% for i in range(3) %}
+the {{ i }} times print in range
+{% endfor %}
+
+{% for i in range(1,10,3) %}
+the {{ i }} times print in range(start 1,end 10,step 3)
+{% endfor %}
+
++++++for if+++++
+{% for i in [7,1,5,3,9] %}
+{% if i <= 5 %}
+loop number:{{ loop.index }} --> the {{ i }} is less then 5
+{% endif %}
+{% endfor %}
+
+{% for i in [7,1,5,3,9] if i <= 5 %}
+loop number:{{ loop.index }} --> the {{ i }} is less then 5
+{% endfor %}
+
+
++++++for if and else+++++
+{% for i in [7,1,5,3,9] if i > 10 %}
+the {{ i }} is less then 5
+{% else %}
+No one number is bigger then 10
+{% endfor %}
+
+{% for i in [] %}
+ the {{ i }} is less then 5
+{% else %}
+the input is NULL
+{% endfor %}
+
+
++++++for break and continue+++++
+{% for i in [7,1,5,3,9] %}
+{% if i <= 5 %}
+{% continue %}
+{% endif %}
+loop number:{{ loop.index }} --> the {{ i }} is bigger then 5
+{% endfor %}
+
+{% for i in [7,1,5,3,9] %}
+{% if loop.index > 3 %}
+{% break %}
+{% endif %}
+loop number:{{ loop.index }} --> the {{ i }}'s index is less then 4
+{% endfor %}
+
++++++for recursive+++++
+{% set dictionary={ 'name':'bob','son':{ 'name':'tom','son':{ 'name':'jerry' } } }  %}
+{% for key,value in dictionary.items() recursive %}
+{# if No.1 #}
+{% if key == 'name' %}
+{% set fathername=value %}
+{% endif %}
+{% if key == 'son' %}
+{# if No.2 #}
+{{ "If No.2's index: "~loop.index }}-->{{ "The father: "~fathername ~"'s son is "~ value.name}}
+////////////
+{{ loop( value.items() ) }}
+{% endif %}
+{% endfor %}
+
+{% set dictionary={ 'name':'bob','son':{ 'name':'tom','son':{ 'name':'jerry' } } }  %}
+{% for key,value in dictionary.items() recursive %}
+{% if key == 'name' %}
+{# if No.1 #}
+{% set fathername=value %}
+{{ "If No.1's index: "~loop.index }}-->{{ "father's name is "~fathername }}
+-------
+{% endif %}
+{% if key == 'son' %}
+{# if No.2 #}
+{{ "If No.2's index: "~loop.index }}-->{{ "The father: "~fathername ~"'s son is "~ value.name}}
+////////////
+{{ loop( value.items() ) }}
+{% endif %}
+{% endfor %}
+
++++++for do+++++
+{% set testlist=[3,5] %}
+{% for i in testlist  -%}
+{{ i~" " }}
+{%- endfor %}
+
+{%do testlist.append(7)%}
+{% for i in testlist  -%}
+{{ i~" " }}
+{%- endfor %}
+
++++++for comment+++++
+{% set testlist=[3,5] %}
+{{ '{{ testlist }}' }}
+{% raw %}
+{% for i in testlist  -%}
+{{ i~" " }}
+{%- endfor %}
+{% endraw %}

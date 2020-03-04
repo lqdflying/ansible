@@ -1,0 +1,13 @@
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    - var: "this is a var"
+    - example_str: 'testString'
+    - example_num: 15
+    - example_list: ['Aa','Bb','Cc','Dd']
+    - example_tuple: ('Aa','Bb','Cc','Dd')
+    - example_dict: {'name':'bob','age':18}
+  tasks:
+  - template:
+      src: ../templates/expression.j2
+      dest: ../tmp/expression.out

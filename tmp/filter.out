@@ -1,0 +1,91 @@
++++default++++
+[]
+[initial value]
+
++++string+++
+abc123ABV --upper--> ABC123ABV
+abc123ABV --lower--> abc123abv
+abc123ABV --capitalize--> Abc123abv
+abc123ABV --reverse--> VBA321cba
+abc123ABV --first--> a
+abc123ABV --last --> V
+[ abc ] --trim --> [abc]
+123456789 --center(30)-->           abc123ABV           
+123456789 --length--> 9
+sfacb1335@#$% --list--> [u'a', u'b', u'c', u'1', u'2', u'3', u'A', u'B', u'V']
+sfacb1335@#$% --shuffle--> [u'b', u'1', u'V', u'A', u'a', u'c', u'B', u'3', u'2']
+
+++++number++++
+8 --int--> 16
+12.3 --int(6)--> 12 
+a --int(6)--> 6
+8 --float--> 8.0
+a --float(8.88)--> 8.88
+-1 --abs--> 1
+12.5 --round--> 13.0
+3.1415926 --round(5)--> 3.14159
+100 --random--> 67
+10 --random(start=5)--> 8
+15 --random(start=4,step=3)--> 10
+15 --random(step=4)--> 4
+15 --random(seed=(ansible_date_time.epoch))--> 11
+15 --random(seed=(inventory_hostname))--> 5
+
++++++list+++++
+[1, 2, 4, 6, 3, 5] --length--> 6
+[1, 2, 4, 6, 3, 5] --first--> 1
+[1, 2, 4, 6, 3, 5] --last--> 5
+[1, 2, 4, 6, 3, 5] --min--> 1
+[1, 2, 4, 6, 3, 5] --max--> 6
+[1, 2, 4, 6, 3, 5] --sort--> [1, 2, 3, 4, 5, 6]
+[1, 2, 4, 6, 3, 5] --sort(reverse=true)-->   [6, 5, 4, 3, 2, 1]  
+[1, [2, 3, 4, [5, 6]]] --flatten--> [1, 2, 3, 4, 5, 6]
+[1, [2, 3, 4, [5, 6]]] --flatten(levels=1)--> [1, 2, 3, 4, [5, 6]]
+[1, [2, 3, 4, [5, 6]]] --flatten | max--> 6
+[1, 2, u'a', u'b', u'cd'] --join--> 12abcd
+[1, 2, u'a', u'b', u'cd'] --join(',')--> 1,2,a,b,cd
+[1, 2, u'a', u'b', u'cd'] --random--> cd
+[1, 2, u'a', u'b', u'cd'] --shuffle--> [1, u'a', u'cd', u'b', 2]
+[1, u'A', u'b', [u'C', u'd'], u'Efg'] --upper--> [1, U'A', U'B', [U'C', U'D'], U'EFG']
+[1, u'A', u'b', [u'C', u'd'], u'Efg'] --lower--> [1, u'a', u'b', [u'c', u'd'], u'efg']
+[u'abc', 1, 2, u'a', 3, 2, u'1', u'abc'] --union(var_list6)--> [u'abc', 1, 2, u'a', 3, u'1', u'b']
+[u'abc', 1, 2, u'a', 3, 2, u'1', u'abc'] --intersect(var_list6)--> [u'abc', u'a', 3, u'1']
+[u'abc', 1, 2, u'a', 3, 2, u'1', u'abc'] --difference(var_list6)--> [1, 2]
+[u'abc', 1, 2, u'a', 3, 2, u'1', u'abc'] --symmetric_difference(var_list6)--> [1, 2, u'b']
+
++++++file path+++++
+
+/home/centos/ansible/ansible.cfg.with_no_comment --basename--> ansible.cfg.with_no_comment
+/home/centos/ansible/ansible.cfg.with_no_comment --dirname--> /home/centos/ansible
+~/ansible/hosts --expanduser--> /home/centos/ansible/hosts
+/home/centos/config.file --realpath--> /home/centos/ansible/ansible.cfg.with_no_comment
+/home/centos/ansible/ansible.cfg.with_no_comment --splitext--> (u'/home/centos/ansible/ansible.cfg', u'.with_no_comment')
+
+++++json_query++++
+[json_query('users[*].name')] ----> [u'tom', u'jerry']
+[json_query('users[*].hobby[*]')] ----> [[u'Skateboard', u'VideoGame'], [u'Music']]
+[json_query("users[?name == `tom`].hobby[*]")] ----> [[u'Skateboard', u'VideoGame']]
+[json_query('users[?name == `tom`].{tom_hobby:hobby,tom_age:age}')] ----> [{'tom_hobby': [u'Skateboard', u'VideoGame'], 'tom_age': 18}]
+
+++++other++++
+[1, 2, 4, 6, 3, 5] --to_uuid--> 9ff906c6-ec10-574a-8bf5-a2c36e402420
+1328 days, 1:00:12
+1327 days, 5:00:00
+41412
+114739200.0
+1328
+
+++++encrypted++++
+'hello' --b64encode--> aGVsbG8=
+'aGVsbG8=' --b64decode--> hello
+'123456' --hash('sha1')--> 7c4a8d09ca3762af61e59520943dc26494f8941b
+'123456' --hash('md5')--> e10adc3949ba59abbe56e057f20f883e
+'123456' --checksum--> 7c4a8d09ca3762af61e59520943dc26494f8941b
+'123456' --hash('blowfish')--> 
+
++++password_hash++++
+'123456' --password_hash('sha256')--> $5$r.R7EyCoV6.IteAo$zYearBDqF.GZhBir8gSqrqugR5IJVC5f/dusFwmgzjD
+'123456' --password_hash('sha256','mysalt')--> $5$mysalt$fOIIX3i4ma8R.v3oVCXktxptg9J2ynA4xJd2z.PTU/8
+'123123' --password_hash('sha512')--> $6$dkHv8FaMvSudescx$TcyADiTFV/izdwGcNzd97E5xoQ7H/wMxi0p4rZR6.S8OoWuOamMhqjslYapO3Iq5ZsHl7a6rIRYHCALboXCrA1
+'123123' --password_hash('sha512','ebzL.U5cjaHe55KK')--> $6$ebzL.U5cjaHe55KK$4n6YkKfq7y.Hi5.88718Os2AZyxjV427bdKNVLK0vM3xxYXcFJeaTYeeDsRzaQf/X4kkNTFi9P4cGw/zfx4rS/
+'123123' --password_hash('sha512', 65534|random(seed=inventory_hostname)|string)--> $6$21888$ICgWIeG6D3Jeh.cNyF/taV5xPbxa5h4XAZMTaojVS3Pn40cl0CyLYKOrR0L.mYtlmIQlm/g5LtGNIEmwo5H5l0

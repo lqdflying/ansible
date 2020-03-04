@@ -1,0 +1,8 @@
+- hosts: localhost
+  gather_facts: yes
+  vars:
+    - var_number: 15
+  tasks:
+  - template:
+      src: ../templates/control.j2
+      dest: ../tmp/control.out
