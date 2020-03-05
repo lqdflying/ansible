@@ -9,4 +9,7 @@
       dest: ../tmp/import_macro.out   
   - template:
       src: ../templates/include_macro.j2
-      dest: ../tmp/include_macro.out         
+      dest: ../tmp/include_macro.out
+  - template:
+      src: ../templates/block_slave.j2
+      dest: ../tmp/block_slave.out  

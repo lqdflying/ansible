@@ -1,0 +1,17 @@
+++++ block1: content won't change frequently++++
+
+{% block func1 %}
+leave for slave's super call
+{% endblock func1 %}
+++++block1: content won't change frequently++++
+
+++++ block2: content won't change frequently++++
+
+{{ self.func1() -}}
+++++block2: content won't change frequently++++
+
+{% for var in ['a','b','c'] -%}
+{% block func2 scoped %}
+something in block_master ---- {{ var }}
+{% endblock func2 %}
+{%- endfor %}

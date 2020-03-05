@@ -1,0 +1,29 @@
+
+++++ block1: content won't change frequently++++
+
+let's print includefunc input vars
+var1: content geterated dynamically
+var2: 2
+var3: 3
+var4: 4
+
+leave for slave's super call
+++++block1: content won't change frequently++++
+
+++++ block2: content won't change frequently++++
+
+let's print includefunc input vars
+var1: content geterated dynamically
+var2: 2
+var3: 3
+var4: 4
+
+leave for slave's super call
+++++block2: content won't change frequently++++
+
+something in block_slave ---- a
+something in block_master ---- a
+something in block_slave ---- b
+something in block_master ---- b
+something in block_slave ---- c
+something in block_master ---- c
