@@ -1,0 +1,7 @@
+
+++++call includefunc++++
+let's print includefunc input vars
+var1: include for sth
+var2: 2
+var3: 3
+var4: 4
