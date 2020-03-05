@@ -1,0 +1,7 @@
+
++++++Test the import feature of jinja2+++
+let's print secondfunc input vars
+var1: import1
+var2: import2
+var3: 3
+var4: 4

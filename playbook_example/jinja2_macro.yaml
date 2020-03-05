@@ -1,0 +1,9 @@
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+  - template:
+      src: ../templates/macro.j2
+      dest: ../tmp/macro.out
+  - template:
+      src: ../templates/import_macro.j2
+      dest: ../tmp/import_macro.out   
