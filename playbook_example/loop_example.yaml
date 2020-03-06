@@ -1,0 +1,282 @@
+- name: loop test
+  hosts: localhost
+  vars:
+  - var_list:
+      - name: liu
+        age: 99
+      - name: quan
+        age: 98
+      - name: dong
+        age: 97
+      - name: this
+        age: 96
+      - name: is
+        age: 95
+      - name: fire
+        age: 94
+  - users_list:
+      - name: bob
+        age: 48
+        hobby:
+          - Games
+          - Sports
+      - name: alice
+        age: 45
+        hobby:
+          - Music
+  - var_nested:
+        - [ anddy, 23, [just,[go,and]] ]
+        - [ tom, 25 ]
+  - var_dict:
+      alice: female
+      bob: male
+  gather_facts: no
+  become: no
+  tasks:
+
+
+
+  - name: empty the output log
+    shell: 
+      cmd: |
+        > ../tmp/loop_example.out
+  - name: with_items and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_items and loop example******"
+  - name: with_items example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_items]example1:--- {{ item.name }}"      
+    with_items: "{{ var_list }}"
+  - name: with_items example2
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_items]example2:--- {{ item }}"      
+    with_items: ["user0","user1","user2"]
+  - name: with_items example3
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_items]example3:--- {{ item.user }} and {{ item.age }}"      
+    with_items:
+      - { user: anddy, age: 23 }
+      - { user: tom, age: 25 }
+  - name: with_items example4
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_items]example4:--- {{ item }} "      
+    with_items: "{{ var_nested }}"
+  - name: use loop instead of with_items example4
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_items]example4:--- {{ item }} "      
+    loop: "{{ var_nested | flatten(levels=1) }}"
+
+
+  - name: with_list and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_list and loop example******"
+  - name: with_list example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_list]example1:--- {{ item }} "      
+    with_list: "{{ var_nested }}"
+  - name: use loop instead of with_list example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[loop instead of with_list]example1:--- {{ item }} "      
+    loop: "{{ var_nested }}"
+      
+  - name: with_flattened and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_flattened and loop example******"
+  - name: with_flattened example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_flattened]example1:--- {{ item }} "      
+    with_flattened: "{{ var_nested }}"
+  - name: use loop instead of with_flattened example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_flattened]example1:--- {{ item }} "      
+    loop: "{{ var_nested | flatten }}"
+      
+  - name: with_together and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_together and loop example******"
+  - name: with_together example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_together]example1:--- {{ item }} "      
+    with_together: "{{ var_nested }}"
+  - name: use loop instead of with_together example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_together]example1:--- {{ item }} "      
+    loop: "{{ var_nested.0 | zip_longest(var_nested.1) | list}}" #use zip() if you want to align with the shortest list
+      
+  - name: with_nested and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_nested and loop example******"
+  - name: with_nested example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_nested]example1:--- {{ item }} "      
+    with_nested: "{{ var_nested }}"
+  - name: use loop instead of with_nested example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_nested]example1:--- {{ item }} "      
+    loop: "{{ var_nested.0 | product(var_nested.1) | list }}"
+      
+  - name: with_indexed_items and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_indexed_items and loop******"
+  - name: with_indexed_items example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_indexed_items]example1:--- {{ item }} "      
+    with_indexed_items: "{{ var_nested }}"
+  - name: use loop instead of with_indexed_items example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_indexed_items]example1:---{{ index }}: {{ item }} "      
+    loop: "{{ var_nested | flatten(levels=1) }}"
+    loop_control:    
+      index_var: index
+
+  - name: with_sequence and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_sequence and loop example******"
+  - name: with_sequence example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_sequence]example1:--- {{ item }} "      
+    with_sequence: start=0 end=17 stride=4 format=testuser%02d
+  - name: use loop instead of with_sequence example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_sequence]example1:--- {{ 'testuser%02d' | format(item) }} "      
+    loop: "{{ range(0,16+1,4) | list }}"
+
+  - name: with_random_choice and random example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_random_choice and random example******"
+  - name: with_random_choice example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_random_choice]example1:--- {{ item }} "      
+    with_random_choice: [1,2,3,4]
+  - name: use random instead of with_random_choice example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use random instead of with_random_choice]example1:--- {{ item | random }} "    #"msg": "random can only be used on sequences and integers"  
+    loop: [1,2,3,4]
+
+  - name: with_dict and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_dict and loop example******"
+  - name: with_dict example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_dict]example1:--- {{ item }} "      
+    with_dict: "{{ var_dict }}"
+  - name: use loop instead of with_dict example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_dict]example1:--- {{ item }} "      
+    loop: "{{ var_dict | dict2items }}"
+
+  - name: with_subelements and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******with_subelements and loop example******"
+  - name: with_subelements example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[with_subelements]example1:--- {{ item }} "      
+    with_subelements: 
+      - "{{ users_list }}"
+      - hobby #the hobby will be set as a standalone element and the others will be set as a entire element,hobby must be a list or list formatted
+  - name: use loop instead of with_subelements example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[use loop instead of with_subelements]example1:--- {{ item }} "      
+    loop: "{{ users_list | subelements('hobby') }}" #the hobby will be set as a standalone element and the others will be set as a entire element,hobby must be a list or list formatted
+
+  - name: with_file example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n+++++with_file example+++"
+  - name: with_file example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "{{ item }} "      
+    with_file: #Read the file on the controller instead of the client
+      - ../vars/user.json
+      - ../vars/simple.csv
+
+  - name: with_fileglob example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n+++++with_fileglob example+++"
+  - name: with_fileglob example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "{{ item }} "      
+    with_fileglob: #Read the file on the controller instead of the client
+      - /home/centos/ansible/vars/info.*
+
+  - name: with_lines example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n+++++with_lines example+++"
+  - name: with_lines example1
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "{{ item }}"      
+    with_lines: #Read the file on the controller instead of the client
+      - cat ../vars/info.fact
+
+######do-Until loop#######
+#- shell: /usr/bin/foo
+#  register: result
+#  until: result.stdout.find("all systems go") != -1
+#  retries: 5
+#  delay: 10
+
+  - name: use register in loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n+++++use register in loop example+++"
+  - name: generate the return to a register
+    shell: 
+      cmd: ls /home/centos
+    register: file_name    
+  - name: use register in loop example
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "{{ item }}"      
+    loop: "{{ file_name.stdout_lines }}"
+
+
+  - name: use loop in a register example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n+++++use loop in a register+++"
+  - name: generate the loop return to a register
+    shell: "echo this is my item: {{ item }}"
+    loop: ['one','two']
+    register: echo_results   
+  - name: use register in loop example
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "{{ echo_results | to_nice_json }}"      

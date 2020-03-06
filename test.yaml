@@ -1,0 +1,10 @@
+- name: loop test
+  hosts: localhost
+  gather_facts: no
+  become: no
+  vars:
+    - list_loop:
+        - [ anddy, 23, [just,go] ]
+        - [ tom, 25 ]
+  tasks:
+  - debug: var="{{ list_loop }}"
