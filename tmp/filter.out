@@ -13,7 +13,7 @@ abc123ABV --last --> V
 123456789 --center(30)-->           abc123ABV           
 123456789 --length--> 9
 sfacb1335@#$% --list--> [u'a', u'b', u'c', u'1', u'2', u'3', u'A', u'B', u'V']
-sfacb1335@#$% --shuffle--> [u'b', u'1', u'V', u'A', u'a', u'c', u'B', u'3', u'2']
+sfacb1335@#$% --shuffle--> [u'c', u'a', u'3', u'b', u'A', u'V', u'2', u'1', u'B']
 
 ++++number++++
 8 --int--> 16
@@ -24,11 +24,11 @@ a --float(8.88)--> 8.88
 -1 --abs--> 1
 12.5 --round--> 13.0
 3.1415926 --round(5)--> 3.14159
-100 --random--> 67
+100 --random--> 81
 10 --random(start=5)--> 8
 15 --random(start=4,step=3)--> 10
-15 --random(step=4)--> 4
-15 --random(seed=(ansible_date_time.epoch))--> 11
+15 --random(step=4)--> 8
+15 --random(seed=(ansible_date_time.epoch))--> 10
 15 --random(seed=(inventory_hostname))--> 5
 
 +++++list+++++
@@ -44,8 +44,8 @@ a --float(8.88)--> 8.88
 [1, [2, 3, 4, [5, 6]]] --flatten | max--> 6
 [1, 2, u'a', u'b', u'cd'] --join--> 12abcd
 [1, 2, u'a', u'b', u'cd'] --join(',')--> 1,2,a,b,cd
-[1, 2, u'a', u'b', u'cd'] --random--> cd
-[1, 2, u'a', u'b', u'cd'] --shuffle--> [1, u'a', u'cd', u'b', 2]
+[1, 2, u'a', u'b', u'cd'] --random--> 1
+[1, 2, u'a', u'b', u'cd'] --shuffle--> [u'a', u'cd', 2, 1, u'b']
 [1, u'A', u'b', [u'C', u'd'], u'Efg'] --upper--> [1, U'A', U'B', [U'C', U'D'], U'EFG']
 [1, u'A', u'b', [u'C', u'd'], u'Efg'] --lower--> [1, u'a', u'b', [u'c', u'd'], u'efg']
 [u'abc', 1, 2, u'a', 3, 2, u'1', u'abc'] --union(var_list6)--> [u'abc', 1, 2, u'a', 3, u'1', u'b']
@@ -84,8 +84,28 @@ a --float(8.88)--> 8.88
 '123456' --hash('blowfish')--> 
 
 +++password_hash++++
-'123456' --password_hash('sha256')--> $5$r.R7EyCoV6.IteAo$zYearBDqF.GZhBir8gSqrqugR5IJVC5f/dusFwmgzjD
+'123456' --password_hash('sha256')--> $5$B7VLZE2XQo2EBprc$M6tkJGmHkQa1lzoeBTTdbRslTn89vvzKaSpWaPLiAO9
 '123456' --password_hash('sha256','mysalt')--> $5$mysalt$fOIIX3i4ma8R.v3oVCXktxptg9J2ynA4xJd2z.PTU/8
-'123123' --password_hash('sha512')--> $6$dkHv8FaMvSudescx$TcyADiTFV/izdwGcNzd97E5xoQ7H/wMxi0p4rZR6.S8OoWuOamMhqjslYapO3Iq5ZsHl7a6rIRYHCALboXCrA1
+'123123' --password_hash('sha512')--> $6$GMleHggIX1cwy/Di$OKi1fQ2ylEb55w6NyWC8ygsKL8bGvBw4zh3N7yheXeiANPvoRb.HRhUs35.kd1L1BRkJqnfLmkFFHbr8wDlnh1
 '123123' --password_hash('sha512','ebzL.U5cjaHe55KK')--> $6$ebzL.U5cjaHe55KK$4n6YkKfq7y.Hi5.88718Os2AZyxjV427bdKNVLK0vM3xxYXcFJeaTYeeDsRzaQf/X4kkNTFi9P4cGw/zfx4rS/
 '123123' --password_hash('sha512', 65534|random(seed=inventory_hostname)|string)--> $6$21888$ICgWIeG6D3Jeh.cNyF/taV5xPbxa5h4XAZMTaojVS3Pn40cl0CyLYKOrR0L.mYtlmIQlm/g5LtGNIEmwo5H5l0
+
++++to[from]_[nice]_json ++++
+[
+    {
+        "mode": "0444",
+        "path": "/home/centos/file1"
+    },
+    {
+        "path": "/home/centos/file2"
+    },
+    {
+        "path": "/home/centos/file3"
+    }
+]
+
++++to_[nice]_yaml ++++
+-       mode: '0444'
+        path: /home/centos/file1
+-       path: /home/centos/file2
+-       path: /home/centos/file3

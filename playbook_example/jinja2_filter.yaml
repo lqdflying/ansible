@@ -21,17 +21,30 @@
           mode: '0444'
         - path: /home/centos/file2
         - path: /home/centos/file3
+    - var_json: '{"name":"anddy.liu","type":"file","server":"localhost","port":12843,"cipher":"chacha20-ietf","password":"justexample","udp":true}'
+    - var_yaml: "{{ lookup('file','../vars/user.json') }}"
   vars_files:
     - ../vars/user.json
   tasks:
   - debug:
       msg: "{{ var_default2 | mandatory }}"
     ignore_errors: yes
+  - debug:
+      msg: "yaml-like vars without from_yaml -->{{ var_yaml | type_debug }}"
+  - debug:
+      msg: "yaml-like vars with from_yaml -->{{ var_yaml | from_yaml | type_debug }}"
+  - debug:
+      msg: "json-like vars without from_json -->{{ var_json  | type_debug }}"  
+  - debug:
+      msg: "json-like vars with from_json -->{{ var_json | from_json | type_debug }}"      
   - file:
       dest: "{{ item.path }}"
       state: touch
       mode: "{{ item.mode | default(omit) }}"
     loop: "{{ var_file }}"
+  - command:
+      cmd: echo "this is a test"
+    register: echo_return
   - template:
       src: ../templates/filter.j2
       dest: ../tmp/filter.out

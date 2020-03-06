@@ -90,3 +90,8 @@ a --float(8.88)--> {{ 'a' | float(8.88) }}
 '123123' --password_hash('sha512','ebzL.U5cjaHe55KK')--> {{ '123123' | password_hash('sha512','ebzL.U5cjaHe55KK') }}
 '123123' --password_hash('sha512', 65534|random(seed=inventory_hostname)|string)--> {{ '123123' | password_hash('sha512', 65534|random(seed=inventory_hostname)|string) }}
 
++++to[from]_[nice]_json ++++
+{{ var_file| to_nice_json }}
+
++++to_[nice]_yaml ++++
+{{ var_file| to_nice_yaml(indent=8, width=1337) }}
