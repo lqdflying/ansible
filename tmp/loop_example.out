@@ -91,8 +91,9 @@
 [use loop instead of with_sequence]example1:--- testuser16 
 
 ******with_random_choice and random example******
-[with_random_choice]example1:--- 3 
+[with_random_choice]example1:--- 1 
 [use random instead of with_random_choice]example1:--- 0 
+[use random instead of with_random_choice]example1:--- 2 
 [use random instead of with_random_choice]example1:--- 1 
 
 ******with_dict and loop example******
@@ -143,6 +144,10 @@ file1
 file2
 file3
 
+******loop_control example******
+[loop_control]example:---0: bob 
+[loop_control]example:---1: alice 
+
 +++++use loop in a register+++
 {
     "changed": true,
@@ -152,8 +157,8 @@ file3
             "ansible_loop_var": "item",
             "changed": true,
             "cmd": "echo this is my item: one",
-            "delta": "0:00:00.003670",
-            "end": "2020-03-06 10:26:25.615073",
+            "delta": "0:00:00.003876",
+            "end": "2020-03-07 12:58:06.967855",
             "failed": false,
             "invocation": {
                 "module_args": {
@@ -172,7 +177,7 @@ file3
             },
             "item": "one",
             "rc": 0,
-            "start": "2020-03-06 10:26:25.611403",
+            "start": "2020-03-07 12:58:06.963979",
             "stderr": "",
             "stderr_lines": [],
             "stdout": "this is my item: one",
@@ -184,8 +189,8 @@ file3
             "ansible_loop_var": "item",
             "changed": true,
             "cmd": "echo this is my item: two",
-            "delta": "0:00:00.003725",
-            "end": "2020-03-06 10:26:25.725987",
+            "delta": "0:00:00.003780",
+            "end": "2020-03-07 12:58:07.080316",
             "failed": false,
             "invocation": {
                 "module_args": {
@@ -204,7 +209,7 @@ file3
             },
             "item": "two",
             "rc": 0,
-            "start": "2020-03-06 10:26:25.722262",
+            "start": "2020-03-07 12:58:07.076536",
             "stderr": "",
             "stderr_lines": [],
             "stdout": "this is my item: two",

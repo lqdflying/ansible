@@ -33,9 +33,6 @@
   gather_facts: no
   become: no
   tasks:
-
-
-
   - name: empty the output log
     shell: 
       cmd: |
@@ -267,6 +264,19 @@
       line: "{{ item }}"      
     loop: "{{ file_name.stdout_lines }}"
 
+  - name: loop_control and loop example title
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "\n******loop_control example******"
+  - name: loop_control example
+    lineinfile: 
+      dest: ../tmp/loop_example.out
+      line: "[loop_control]example:---{{ index }}: {{ item.key }} "      
+    loop: "{{ var_dict | dict2items }}"
+    loop_control:    
+      index_var: index
+      pause: 3
+      label: "Simplified information of the items"
 
   - name: use loop in a register example title
     lineinfile: 
