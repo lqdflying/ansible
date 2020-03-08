@@ -9,6 +9,7 @@
     debug: msg={{ new_lookup | type_debug }}
   - name: the value which lookup with file returned
     debug: msg={{ new_lookup }}
+    
 - name: lookup with pipe
   hosts: localhost
   gather_facts: no
@@ -20,6 +21,7 @@
     debug: msg={{ new_lookup | type_debug }}
   - name: the value which lookup with pip returned
     debug: msg={{ new_lookup }}
+    
 - name: lookup with ENV
   hosts: localhost
   gather_facts: no
@@ -31,6 +33,7 @@
     debug: msg={{ new_lookup | type_debug }}
   - name: the value which lookup with ENV returned
     debug: msg={{ new_lookup }}
+    
 - name: lookup with template
   hosts: localhost
   gather_facts: yes 
@@ -43,6 +46,7 @@
     debug: msg={{ new_lookup | type_debug }}
   - name: the value which lookup with template returned
     debug: msg={{ new_lookup }}
+    
 - name: lookup with csvfile
   hosts: localhost
   gather_facts: no
