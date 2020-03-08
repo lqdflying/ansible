@@ -1,0 +1,150 @@
+- name: when example dedicated to localhost
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    - list_number:
+        a: 1
+        b: 2
+        c: 3
+    - var_file: /home/centos/ansible/hosts
+    - var_string: liuqd
+    - var_version: 7.4
+    - var_list1: [1, 2, 3]
+    - var_list2: [1, 2, 3, 4]
+  tasks:  
+  - command: ls /home/centos
+    register: command_check
+    
+  - debug:
+      msg: "command run correctly"
+    when: command_check.rc == 0
+    
+  - debug:
+      msg: "a is smaller then b"
+    when: list_number.a < list_number.b #optinal choice: ==, !=, >, <, >=, <=
+    
+  - debug:
+      msg: "The Platform is Centos 7"
+    when: #optinal choice: and, or, not
+      ( ansible_distribution == "CentOS" and ansible_distribution_major_version == "7" )
+      and 
+      ( list_number.a < list_number.b ) 
+
+- name: when example together with jinja2 Test
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    - list_number:
+        a: 1
+        b: 2
+        c: 3
+    - var_file: /home/centos/ansible/hosts
+    - var_string: liuqd
+    - var_version: 7.4
+    - var_list1: [1, 2, 3]
+    - var_list2: [1, 2, 3, 4]
+  tasks: 
+  - debug:
+      msg: "It's a CentOs system"
+    when: ansible_distribution == "CentOS"
+    register: os_type_check
+    
+  - debug:
+      msg: "the task above run successfully"
+    when: os_type_check is success ##optinal choice: sucess|succeeded, failure|failed, change|changed, skip|skipped
+      
+  - debug:
+      msg: "The File exist"
+    when: var_file is exists #optinal choice: is not exists
+    
+  - debug:
+      msg: "The var is defined"
+    when: var_file is defined #optinal choice: is undefined, is none
+    
+  - debug:
+      msg: "The var is a file"
+    when: var_file is file #optinal choice: directory, link, mount, exists
+    
+  - debug:
+      msg: "The string is lowercase"
+    when: var_string is lower #optinal choice: upper
+    
+  - debug:
+      msg: "The string is an odd number"
+    when: list_number.c is odd #optinal choice: even, odd, divisibleby(num)
+    
+  - debug:
+      msg: "The version is greater than 7.3 but lower than 8.0"
+    when: 
+      ( var_version is version("7.3","gt") )
+      and
+      ( var_version is version("8.0","<") ) #optinal choice: ==|=|eq, !=|<>|ne, >|gt, <|lt, >=|ge, <=|le
+      
+  - debug:
+      msg: "var_list2 is the parent set of var_list1"
+    when: var_list2 is superset(var_list1) #optinal choice: subset(), superset()
+
+  - debug:
+      msg: "1 is in var_list1"
+    when: 1 in var_list1
+
+  - debug:
+      msg: "var_string is a string"
+    when: var_string is string #optinal choice: number
+
+
+- name: when and block example dedicated to localhost
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    - list_number: 2
+  tasks:
+    - block:
+        - debug: msg="the var is a number"
+        - debug: msg="the var is not bigger than 5"
+      when: 
+        ( list_number is number )
+        and
+        ( list_number < 5 )
+    - block:
+        - command: ls /home/liuqd
+      rescue: 
+        - debug: msg="/home/liuqd is not exists" 
+    - block:
+        - command: ls /home/liuqd
+          ignore_errors: yes
+      always: 
+        - debug: msg="I always will be played" 
+
+- name: when and fail example dedicated to localhost
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    - list_number: 2
+  tasks:
+    - command: ls /home/liuqd
+      ignore_errors: yes
+      register: command_out
+      failed_when: "command_out.rc != 0" #use failed_when directly in the task instead of create another task to call the fail module
+      changed_when: "command_out.rc == 0" #the command task would set the "changed" status to true only when command_out.rc == 0
+    - fail:
+        msg: "because the fail module,the debug module bellow won't exec unless set ignore_errors to yes"
+      when: command_out.rc != 0
+      ignore_errors: yes
+    - debug: msg={{ command_out }}
+
+- name: when and loop example dedicated to localhost
+  hosts: localhost
+  gather_facts: yes
+  vars:
+    - os_demo:
+        - name: web
+          mount: "/"
+          size: 300
+        - name: ap
+          mount: "/"
+          size: 100
+  tasks:
+  - debug: msg="The database could install on the {{ item.name }}"
+    loop: "{{ os_demo }}"
+    when: item.mount == "/" and item.size > 200
