@@ -9,7 +9,44 @@
     debug: msg={{ new_lookup | type_debug }}
   - name: the value which lookup with file returned
     debug: msg={{ new_lookup }}
-    
+ 
+- name: lookup with first_found
+  hosts: localhost
+  vars:
+    - looklist:
+        - /home/centos/file2
+        - /home/centos/file1
+        - /home/centos/file3
+  gather_facts: no
+  become: no
+  tasks:
+  - name: the type of value which lookup with first_found returned
+    debug: msg={{ lookup('first_found', looklist) | type_debug }}
+  - name: the value which lookup with file returned
+    debug: msg={{ lookup('first_found', looklist) }}
+
+- name: lookup with ini
+  hosts: localhost
+  gather_facts: no
+  vars:
+    - new_lookup1: "{{ lookup('ini','package section=general file=../vars/info.fact default=`notfound`') }}"
+    - new_lookup2: "{{ lookup('ini','^sta* section=general file=../vars/info.fact re=true default=`notfound`') }}" 
+    - new_lookup3: "{{ lookup('ini','new section=general file=../vars/info.fact default=`GOGOGO`') }}" 
+  become: no
+  tasks:
+  - name: the type of value which lookup with file returned
+    debug: 
+      msg: |
+        {{ new_lookup1 | type_debug }} ---
+        {{ new_lookup2 | type_debug }} ---
+        {{ new_lookup3 | type_debug }} ---
+  - name: the value which lookup with file returned
+    debug:
+      msg: |
+        {{ new_lookup1 }} ---
+        {{ new_lookup2 }} ---
+        {{ new_lookup3 }} ---
+ 
 - name: lookup with pipe
   hosts: localhost
   gather_facts: no
