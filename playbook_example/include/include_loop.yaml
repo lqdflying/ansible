@@ -1,0 +1,6 @@
+- debug:
+    msg: "outside vars: {{ out_item }} |inside vars: {{ item }}--task in include_loop.yaml"
+  loop:
+    - inside1
+    - inside2
+    - inside3

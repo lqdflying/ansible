@@ -1,0 +1,4 @@
+- set_fact:
+    testnum: 1
+- debug:
+    msg: "task in include_or_import_tasks_when.yaml"

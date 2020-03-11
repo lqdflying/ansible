@@ -1,0 +1,7 @@
+- name: include sub example
+  hosts: localhost
+  become: no
+  gather_facts: no
+  tasks:
+  - debug:
+      msg: "include_sub playbook"

@@ -1,0 +1,4 @@
+- debug:
+    msg: "{{ var_string.var1 }}"
+- debug:
+    msg: "{{ var_number.num2.num_value }}"

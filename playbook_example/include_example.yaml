@@ -1,0 +1,98 @@
+- name: include example for old method
+  hosts: localhost
+  become: no
+  gather_facts: no
+  tasks:
+  - include: include/include_play.yaml
+      test_var1=liuqd_var1
+      test_var2=liuqd_var2
+    when: 1 < 2
+    tags: t1
+  - include: include/book.yaml name="like your dream"
+    tags: t2
+  - include: include/include_vars.yaml
+    vars:
+      - var_string:
+         var1: just
+         var2: gogo
+      - var_number:
+          num1: 1
+          num2:
+            name: just is number2
+            num_value: 2
+    tags: t3
+  - include: include/include_loop.yaml
+    loop: ['out1', 'out2', 'out3']
+    loop_control:
+      loop_var: out_item
+    tags: t4
+
+- include: include_sub.yaml
+
+- name: include example for new method
+  hosts: localhost
+  become: no
+  gather_facts: no
+  tasks:
+  - include_tasks: 
+      file: include/include_play.yaml
+    vars:
+      - test_var1: liuqd_var1
+      - test_var2: liuqd_var2
+    args:
+      apply:
+        tags: t5
+    tags: always
+  - include_tasks: include/book.yaml
+    vars:
+      name: "like your dream"
+      apply:
+        tags: t6
+    tags: always
+  - include_tasks: include/include_vars.yaml
+    vars:
+      - var_string:
+         var1: just
+         var2: gogo
+      - var_number:
+          num1: 1
+          num2:
+            name: just is number2
+            num_value: 2
+    args:    
+      apply:
+        tags: t7
+    tags: always
+  - import_tasks: include/include_vars.yaml
+    vars:
+      - var_string:
+         var1: newnew
+         var2: beebee
+      - var_number:
+          num1: 3
+          num2:
+            name: just is number2
+            num_value: 4
+    tags: t8
+    
+- name: different between import_tasks and import_tasks with use when method
+  hosts: localhost
+  become: no
+  gather_facts: no
+  tasks:
+  - name: '----------set testvar to 0'
+    set_fact:
+      testnum: 0
+  - debug:
+      msg: '-----include_tasks-----enter the include_or_import_tasks_when.yaml-----'
+  - include_tasks: include/include_or_import_tasks_when.yaml
+    when: testnum == 0
+  - name: '----------set testvar to 0'
+    set_fact:
+      testnum: 0
+  - debug:
+      msg: '-----import_tasks-----enter the include_or_import_tasks_when.yaml-----'
+  - import_tasks: include/include_or_import_tasks_when.yaml
+    when: testnum == 0
+
+- import_playbook: include_sub.yaml

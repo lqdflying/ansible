@@ -3,6 +3,7 @@ inventory      = ./hosts
 roles_path    = ./roles
 remote_user = centos
 jinja2_extensions = jinja2.ext.do,jinja2.ext.i18n,jinja2.ext.loopcontrols
+deprecation_warnings = False
 bin_ansible_callbacks = True
 retry_files_enabled = True
 retry_files_save_path = ./.ansible-retry
