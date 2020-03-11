@@ -1,0 +1,31 @@
+- hosts: localhost
+  gather_facts: no
+  become: yes
+  tags: web
+  tasks:
+  - debug:
+      msg: "tag1"
+    tags: tag1
+  - debug:
+      msg: "tag2,nginx,always"
+    tags:
+      - tag2
+      - nginx
+      - always
+  - debug:
+      msg: "tag3,apache"
+    tags: ['tag3', 'apache', never]
+  - debug:
+      msg: "tag4,caddy"
+    tags: tag4,caddy
+  - debug:
+      msg: "never with playbook-level tags"
+    tags: never
+
+- hosts: localhost
+  gather_facts: no
+  become: yes
+  tasks:
+  - debug:
+      msg: "never without playbook-level tags"
+    tags: never
