@@ -1,2 +1,2 @@
 - debug:
-    msg: "{{ name }}"
+    msg: "{{ name }} and {{ age }}"

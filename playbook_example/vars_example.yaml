@@ -12,6 +12,8 @@
         i
         love
         u
+    - var6: { var1: include/user.yaml, var2: {name: 'timmy', age: 20}, var3: t3 }
+    - var7: { var1: include/user.yaml, var2: [name: 'timmy', age: 20], var3: t3 }
   vars_files:
     - ../vars/info.yaml
   tasks:
@@ -27,6 +29,8 @@
   - name: output var5
     debug:
       msg: "{{ var5 }}"
+  - debug: msg={{ var6 }}
+  - debug: msg={{ var7 }}
   - name: check the return vars type of var1,var3 and var5
     debug:
       msg: "var1's type is {{ var1 | type_debug }}\nvar3's type is {{ var3 | type_debug }}\nvar5's type is {{ var5 | type_debug }}"

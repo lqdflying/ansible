@@ -3,8 +3,10 @@
   gather_facts: no
   become: no
   vars:
-    - list_loop:
-        - [ anddy, 23, [just,go] ]
-        - [ tom, 25 ]
+    - var1 : { include: include/user.yaml, vars: {name: 'timmy', age: 20}, tags: t3 }
+    - var2 : { include: include/user.yaml, vars: [name: 'timmy', age: 20], tags: t3 }
   tasks:
-  - debug: var="{{ list_loop }}"
+  - debug:
+      msg: "{{ var1 }}"
+  - debug:
+      msg: "{{ var2 }}"
