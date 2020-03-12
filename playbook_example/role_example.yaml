@@ -1,0 +1,9 @@
+- hosts: localhost
+  gather_facts: yes
+  become: no
+  roles:
+    - role: first
+      vars:
+        - var_string: outside string
+        - dest_path: /home/centos/ansible/tmp/role1.out
+    - { role: first, var_string: outside string1, dest_path: /home/centos/ansible/tmp/role2.out }

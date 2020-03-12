@@ -1,0 +1,9 @@
+---
+# tasks file for first
+- debug:
+    msg: "var from playbook:{{ var_string }}"
+- debug:
+    msg: "{{ liuqd }}"
+- template:
+    src: sample.j2
+    dest: "{{ dest_path }}"
