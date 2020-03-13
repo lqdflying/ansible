@@ -1,0 +1,15 @@
+---
+# tasks file for second
+- debug:
+    msg: "var from playbook:{{ var_string }}"
+- debug:
+    msg: "{{ liuqd }}"
+- template:
+    src: sample.j2
+    dest: "{{ dest_path }}"
+- debug:
+    msg: "inside vars of the role: {{ item }}--task in include_loop.yaml"
+  loop:
+    - inside1
+    - inside2
+    - inside3

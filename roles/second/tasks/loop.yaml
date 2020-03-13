@@ -1,0 +1,8 @@
+- debug:
+    msg: "var from playbook:{{ var_string }}"
+- debug:
+    msg: "outside vars for the role: {{ out_item }} |inside vars of the role: {{ item }}--task in include_loop.yaml"
+  loop:
+    - inside1
+    - inside2
+    - inside3

@@ -1,0 +1,9 @@
+---
+# vars file for first
+liuqd:
+  - name: liuqd
+    age: 23
+  - name: quan
+    age: 24
+  - name: dong
+    age: 25

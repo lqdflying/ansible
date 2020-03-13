@@ -1,9 +1,49 @@
-- hosts: localhost
+- name: call the role using roles instead of tasks
+  hosts: localhost
   gather_facts: yes
   become: no
+  pre_tasks:
+  - debug:
+      msg: "tasks before roles"
   roles:
-    - role: first
-      vars:
-        - var_string: outside string
-        - dest_path: /home/centos/ansible/tmp/role1.out
-    - { role: first, var_string: outside string1, dest_path: /home/centos/ansible/tmp/role2.out }
+  - role: first
+    vars:
+      - var_string: outside string
+      - dest_path: /home/centos/ansible/tmp/role1.out
+    tag: t1
+  - { role: first, dest_path: /home/centos/ansible/tmp/role2.out, tags: t2 }
+  post_tasks:
+  - debug:
+      msg: "tasks after roles"
+
+- name: call the role using include_roles and import_roles in tasks
+  hosts: localhost
+  gather_facts: yes
+  become: no
+  tasks:
+  - name: include_role example1
+    include_role:
+      name: second
+      public: yes
+      apply:
+        tags: 
+          - t3
+    tags: 
+      - always
+    vars:
+      - var_string: outside string in include_role example1
+      - dest_path: /home/centos/ansible/tmp/role3.out
+  - name: include_role with loop
+    include_role:
+      name: second
+      tasks_from: loop.yaml
+      apply:
+        tags: 
+          - t4
+    tags: 
+      - always
+    loop:
+      - out1
+      - out2
+    loop_control:
+      loop_var: out_item
