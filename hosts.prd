@@ -7,9 +7,6 @@ middleware ansible_host=172.26.11.97 ansible_port=22 ansible_user=centos my_var=
 [DMZ]
 ihs ansible_host=172.26.11.97 ansible_port=22 ansible_user=centos
 
-[DEV]
-dev_web ansible_host=172.26.11.97 ansible_port=22 ansible_user=centos
-dev_middleware ansible_host=172.26.11.97 ansible_port=22 ansible_user=centos
 
 [DMZ:vars]
 ansible_ssh_pipelining=true
@@ -24,5 +21,3 @@ group_prod_name=prod_group
 ansible_ssh_private_key_file=~/.ssh/id_rsa.dev
 
 
-[DEV:children]
-DMZ
