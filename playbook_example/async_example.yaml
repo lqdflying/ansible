@@ -1,0 +1,15 @@
+- hosts: slave
+  gather_facts: no
+  become: no
+  tasks :
+    - name: sleep demo
+      shell: sleep 6
+      async: 8
+      poll: 0
+      register: kevin_result
+    - debug: msg={{ kevin_result }}
+    - name: check ansible-test task polling results
+      async_status: jid={{ kevin_result.ansible_job_id }}
+      register: job_result
+      until: job_result.finished
+      retries: 10
