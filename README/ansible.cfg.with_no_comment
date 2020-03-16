@@ -1,11 +1,15 @@
 [defaults]
 inventory      = ./hosts.prd,./hosts.dev
+gathering = smart
 roles_path    = ./roles
 host_key_checking = False
 remote_user = centos
 jinja2_extensions = jinja2.ext.do,jinja2.ext.i18n,jinja2.ext.loopcontrols
 deprecation_warnings = False
 bin_ansible_callbacks = True
+fact_caching = redis
+facts_caching_timeout = 864000
+fact_caching_connection = 127.0.0.1:6379
 retry_files_enabled = True
 retry_files_save_path = ./.ansible-retry
 [inventory]

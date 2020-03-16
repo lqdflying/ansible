@@ -1,12 +1,6 @@
-- name: loop test
-  hosts: localhost
-  gather_facts: no
-  become: no
-  vars:
-    - var1 : { include: include/user.yaml, vars: {name: 'timmy', age: 20}, tags: t3 }
-    - var2 : { include: include/user.yaml, vars: [name: 'timmy', age: 20], tags: t3 }
+- hosts: slave
   tasks:
-  - debug:
-      msg: "{{ var1 }}"
-  - debug:
-      msg: "{{ var2 }}"
+  - shell:
+      cmd: ls  
+    register: ls_return
+  - debug: msg={{ ls_return }}
