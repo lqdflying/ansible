@@ -1,0 +1,53 @@
+- name: append the list
+  hosts: localhost
+  gather_facts: no
+  vars:
+  - var_list1:
+      - 1
+      - 2
+  - var_list2:
+      - a
+      - b
+      - c
+  tasks:
+  - set_fact:
+      list_out: ["var_list1+var_list2 --> {{ var_list1+var_list2 }}", "var_list1+['a'] --> {{ var_list1+['a'] }}"]
+      list_extend: "{{ var_list1.extend(['b','a']) }}{{ var_list1 }}"
+      list_append: "{{ var_list1.append('f') }}{{ var_list1 }}"
+  - debug: msg="{{ list_out }}"
+  - debug: msg="var_list1.extend(['b','a']) --> {{ list_extend }}"
+  - debug: msg="var_list1.append('f') --> {{ list_append }}"
+
+- name: insert the list
+  hosts: localhost
+  gather_facts: no
+  vars:
+  - var_list1:
+      - 1
+      - 2
+  tasks:
+  - set_fact:
+      list_insert: "{{ var_list1.insert(1,'F') }}{{ var_list1 }}"
+  - debug: msg="var_list1.insert(1,'F') --> {{ list_insert }}"
+
+- name: delete a element in the list
+  hosts: localhost
+  gather_facts: no
+  vars:
+  - var_list1:
+      - 1
+      - 2
+      - 3
+      - a
+      - b
+      - 1
+  tasks:
+  - set_fact:
+      list_pop: "{{ [var_list1.pop(3),var_list1][1] }}"
+      list_remove: "{{ var_list1.remove(1) }}{{ var_list1 }}"
+      list_jinja2: "{%for i in var_list1%}{% if 1 in var_list1%}{{var_list1.remove(1)}}{%endif%}{%endfor%}{{var_list1}}"
+      list_reject: "{{ var_list1 | reject('search','1') | list }}"
+  - debug: msg="[var_list1.pop(3),var_list1][1] --> {{ list_pop }}"
+  - debug: msg="var_list1.remove(1) --> {{ list_remove }}"
+  - debug: msg="'{'%for i in var_list1%'}{'% if 1 in var_list1%'}{{'var_list1.remove(1)'}}{'%endif%'}{'%endfor% }' --> {{ list_jinja2 }}"
+  - debug: msg="var_list1 | reject('search',1) | list  --> {{ list_reject }}"

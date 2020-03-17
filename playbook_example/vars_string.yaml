@@ -1,0 +1,8 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+  - var_string: "vaA12345"
+  tasks:
+  - set_fact:
+      string_out: ["var_string[2] --> {{ var_string[2] }}", "var_string[2:5] --> {{ var_string[2:5] }}", "var_string[2:] --> {{ var_string[2:] }}", "var_string[:2] --> {{ var_string[:2] }}", "var_string*2 --> {{ var_string*2 }}", "var_string+'_just' --> {{ var_string*2+'_just' }}", "var_string.find('A',1) --> {{ var_string.find('A',1) }}"]
+  - debug: msg="{{ string_out }}"
