@@ -1,6 +1,9 @@
 {% set var_1='import1' %}
 {% set var_2='import2' %}
-{% import 'macro.j2' as macro_func with context %}
-
+{% import 'macro.j2' as macro_func%}
+{% import 'macro_simple.j2' as simple with context %}
 +++++Test the import feature of jinja2+++
 {{ macro_func.secondfunc( var2=var_2, var1=var_1 ) }}
+
++++++Test the import with context+++
+{{ simple.simplefunc() }}
